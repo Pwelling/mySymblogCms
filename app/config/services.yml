@@ -1,0 +1,14 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+  blog_helper:
+    class: AppBundle\Helpers\BlogHelper
+    arguments:
+      - "@service_container"
+  comment_helper:
+    class: AppBundle\Helpers\CommentHelper
+    arguments:
+          - "@service_container"

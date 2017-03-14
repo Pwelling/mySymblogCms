@@ -1,0 +1,21 @@
+{% extends '@App/base.html.twig' %}
+
+{%  block body %}
+    {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+    {{ form_start(form, {
+        'method': 'POST',
+        'action' : path('editBlog', { 'slug' : blog.slug }),
+        'attr' : {
+            'class' : 'blog',
+            'autocomplete' : 'off'
+        }
+    }) }}
+        {{ form_widget(form) }}
+        {% include '@App/partials/formButtons.html.twig' %}
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {#{{ tinymce_init() }}#}
+{% endblock %}

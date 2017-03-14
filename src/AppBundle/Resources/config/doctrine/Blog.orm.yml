@@ -1,0 +1,58 @@
+AppBundle\Entity\Blog:
+  type: entity
+  repositoryClass: AppBundle\EntityRepositories\Blog
+  table: blo_blog
+  gedmo:
+    loggable: true
+  id:
+    id:
+      type: integer
+      nullable: false
+      column: blo_id
+      id: true
+      generator:
+        strategy: IDENTITY
+  fields:
+    title:
+      type: string
+      nullable: false
+      column: blo_title
+      gedmo:
+        - versioned
+    author:
+      type: string
+      length: 100
+      nullable: false
+      column: blo_author
+    blog:
+      type: text
+      nullable: false
+      column: blo_blog
+    tags:
+      type: text
+      nullable: true
+      column: blo_tags
+    slug:
+      type: string
+      nullable: true
+      column: blo_slug
+    created:
+      type: datetime
+      nullable: false
+      column: blo_created
+      gedmo:
+        timestampable:
+          on: create
+    updated:
+      type: datetime
+      nullable: true
+      column: blo_updated
+      gedmo:
+        timestampable:
+          on: update
+  oneToMany:
+    comments:
+      targetEntity: Comment
+      cascade: ["persist"]
+      orphanRemoval: true
+      mappedBy: blog

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link href="{{ asset('css/bootstrap.css') }}" rel='stylesheet' type="text/css"/>
+    <link href="{{ asset('css/main.css') }}" rel='stylesheet' type="text/css"/>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <span class="navbar-brand" >{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |</span>
+                <a class="navbar-brand" href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
+            {% endif %}
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                {% else %}
+                    <i class="{{ app.request.attributes.get('_route') == 'fos_user_security_login' ? 'active' }}">
+                        <a class="navbar-brand" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                    </i>
+                {% endif %}
+                <li class="{{ app.request.attributes.get('_route') == 'homepage' ? 'active' }}"><a href="{{ path('homepage') }}">Home</a></li>
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li class="{{ (
+                        app.request.attributes.get('_route') == 'blogs'
+                        or app.request.attributes.get('_route') == 'createBlog'
+                        or app.request.attributes.get('_route') == 'editBlog'
+                        or app.request.attributes.get('_route') == 'comments'
+                    ) ? 'active' }}"><a href="{{ path('blogs') }}">Blogs</a></li>
+                {% endif %}
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container theme-showcase" role="main">
+    <div class="page-header"></div>
+    {% block body %}{% endblock %}
+</div>
+<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

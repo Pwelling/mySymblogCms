@@ -1,0 +1,63 @@
+{% extends '@App/base.html.twig' %}
+
+{% block body %}
+    <style type="text/css">
+        .notApproved{
+            color: #C82829;
+        }
+
+        .approved{
+            color: #66dd66;
+        }
+    </style>
+    <div class="col-md-12">
+        <h3>Opmerkingen voor '{{ blog.title }}'</h3>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-striped table-hover">
+            <thead>
+                <th class="col-md-3">{{ 'comment.date' | trans }}</th>
+                <th class="col-md-6">{{ 'comment.comment' | trans }}</th>
+                <th>{{ 'comment.author' | trans }}</th>
+                <th></th>
+            </thead>
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.created.format('d-m-Y H:i:s') }}</td>
+                    <td>{{ comment.comment | nl2br }}</td>
+                    <td>{{ comment.user }}</td>
+                    <td>
+                        <a onclick="setCommentApprovedStatus({{ comment.id }}, this);" title="{% if comment.approved %}{{ 'titleTag.visible' | trans }}{% else %}{{ 'titleTag.hidden' | trans }}{% endif %}">
+                            <span class="glyphicon glyphicon-stop {% if comment.approved %}approved{% else %}notApproved{% endif %}"></span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function setCommentApprovedStatus(commentId, elm)
+        {
+            $.ajax({
+                url: '{{ path('commentVisibility') }}',
+                dataType: 'json',
+                method: 'POST',
+                data: { 'commentId' : commentId }
+            }).done(function (data) {
+                if (data.result) {
+                    $(elm).find('.glyphicon').addClass(data.newStatus ? 'approved' : 'notApproved');
+                    $(elm).find('.glyphicon').removeClass(data.newStatus ? 'notApproved' : 'approved');
+                    $(elm).attr('title', data.newStatus ? '{{ 'titleTag.visible' | trans }}' : '{{ 'titleTag.hidden' | trans }}');
+                } else {
+                    var message = '{{ 'messages.ErrorTryAgain' | trans }}';
+                    alert(message);
+                }
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+welkom: 'Welkom'
+blog:
+  title: 'Titel'
+  date: 'Datum'
+  blog: 'Blog'
+  tags: 'Tags'
+  comments: 'Opmerkingen'
+button:
+  submit: 'Opslaan'
+  cancel: 'Annuleren'
+  add: 'Toevoegen'
+  title:
+    edit: 'Bewerken'
+    remove: 'Verwijderen'
+    comments: 'Opmerkingen'
+confirm:
+  removeBlog: 'Weet je zeker dat je het blog "%s" wilt verwijderen?'
+messages:
+  blogRemoved: 'Het blog is succesvol verwijderd'
+  ErrorTryAgain: 'Er is iets fout gegaan. Probeert u het nogmaals'
+titleTag:
+  visible: 'Zichtbaar'
+  hidden: 'Verborgen'
+comment:
+  date: 'Datum'
+  comment: 'Opmerking'
+  author: 'Auteur'

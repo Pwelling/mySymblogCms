@@ -1,0 +1,51 @@
+AppBundle\Entity\Comment:
+  type: entity
+  repositoryClass: AppBundle\EntityRepositories\Comment
+  table: com_comments
+  gedmo:
+    loggable: true
+  id:
+    id:
+      type: integer
+      nullable: false
+      column: com_id
+      id: true
+      generator:
+        strategy: IDENTITY
+  fields:
+    user:
+      type: string
+      nullable: false
+      column: com_user
+      gedmo:
+        - versioned
+    comment:
+      type: text
+      nullable: false
+      column: com_comment
+    approved:
+      type: boolean
+      nullable: false
+      column: com_approved
+    created:
+      type: datetime
+      nullable: false
+      column: com_created
+      gedmo:
+        timestampable:
+          on: create
+    updated:
+      type: datetime
+      nullable: true
+      column: com_updated
+      gedmo:
+        timestampable:
+          on: update
+  manyToOne:
+    blog:
+      targetEntity: AppBundle\Entity\Blog
+      nullable: false
+      cascade: ["persist"]
+      joinColumn:
+        name: com_blog_id
+        referencedColumnName: blo_id

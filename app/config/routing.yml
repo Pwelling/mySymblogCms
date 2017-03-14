@@ -1,0 +1,40 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+homepage:
+    path:     /
+    defaults: { _controller: AppBundle:Blog:index }
+    methods: [GET]
+blogs:
+    path: /blog/
+    defaults: { _controller: AppBundle:Blog:blogs }
+    methods: [GET]
+createBlog:
+    path: /blog/create
+    defaults: { _controller: AppBundle:Blog:create }
+    methods: [GET, POST]
+editBlog:
+    path: /blog/edit/{slug}
+    defaults: { _controller: AppBundle:Blog:edit }
+    methods: [GET, POST]
+removeBlog:
+    path: /blog/remove/{id}
+    defaults: { _controller: AppBundle:Blog:remove }
+    requirements: { id: \d+ }
+    methods: [GET]
+
+comments:
+    path: /blog/{slug}/comments
+    defaults: { _controller: AppBundle:Comment:comments }
+    methods: [GET]
+commentVisibility:
+    path: /blog/commentvisibiliy/
+    defaults: { _controller: AppBundle:Comment:visibility }
+    methods: [POST]
+
+elfinder:
+     resource: "@FMElfinderBundle/Resources/config/routing.yml"

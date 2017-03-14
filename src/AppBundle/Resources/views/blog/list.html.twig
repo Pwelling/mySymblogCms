@@ -1,0 +1,60 @@
+{% extends '@App/base.html.twig' %}
+
+{% block body %}
+    <div class="pull-right">
+        <button class="btn btn-success" id="addBlogButton">{{ 'button.add'| trans }}</button>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>{{ 'blog.date' | trans }}</th>
+                <th>{{ 'blog.title' | trans }}</th>
+                <th>{{ 'blog.comments' | trans }}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for blog in blogs %}
+                <tr>
+                    <td>{{ blog.created | date('d-m-Y') }}</td>
+                    <td>{{ blog.title }}</td>
+                    <td>{{ blog.comments | length }}</td>
+                    <td><a href="{{ path('editBlog', { 'slug' : blog.slug }) }}" title="{{ 'button.title.edit' | trans }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                    <td><a onclick="confirmRemove({{ blog.id }}, '{% autoescape 'js' %}{{ blog.title  }}{% endautoescape %}');"><span class="glyphicon glyphicon-remove" title="{{ 'button.title.remove' | trans }}"></span></a></td>
+                    <td><a href="{{ path('comments', { 'slug' : blog.slug }) }}"><span class="glyphicon glyphicon-comment" title="{{ 'button.title.comments' | trans }}"></span></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function(){
+            $('#addBlogButton').click(function() {
+                window.location = '{{ path('createBlog') }}';
+            });
+        });
+
+        function confirmRemove(blogId, blogTitle)
+        {
+            if (confirm('{{ 'confirm.removeBlog' | trans | raw }}' . replace('%s', blogTitle))) {
+                $.ajax({
+                    url: '/blog/remove/' + blogId,
+                    dataType: 'json'
+                }).done(function(data) {
+                    if (data.result) {
+                        window.location = window.location;
+                    } else {
+                        var message = '{{ 'messages.ErrorTryAgain' | trans }}';
+                        alert(message);
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}
